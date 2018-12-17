@@ -1,0 +1,22 @@
+--- a/kernel/nvidia/os-interface.c	2018-12-17 21:10:18.000000000 +0100
++++ b/kernel/nvidia/os-interface.c	2018-12-17 21:19:05.952106788 +0100
+@@ -1697,7 +1697,7 @@
+ 
+ struct nv_ipmi_softc
+ {
+-    ipmi_user_t         p_user;     // ptr to ipmi_msghandler user structure
++    struct ipmi_user    *p_user;     // ptr to ipmi_msghandler user structure
+     spinlock_t          msg_lock;
+     struct list_head    msgs;
+     NvU32               seqNum;     //request sequence number
+@@ -1706,8 +1706,8 @@
+ static inline int
+ nv_ipmi_set_my_address
+ (
+-    ipmi_user_t     user,
+-    unsigned char   address
++    struct ipmi_user *user,
++    unsigned char    address
+ )
+ {
+ #if defined(IPMICTL_SET_MY_CHANNEL_ADDRESS_CMD)
