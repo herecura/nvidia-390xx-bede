@@ -4,10 +4,10 @@
 _pkgname=nvidia
 pkgname=$_pkgname-390xx-bede
 pkgver=390.87
-_extramodules=4.19-BEDE-external
-_current_linux_version=4.19.12
-_next_linux_version=4.20
-pkgrel=33
+_extramodules=4.20-BEDE-external
+_current_linux_version=4.20
+_next_linux_version=4.21
+pkgrel=35
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -25,8 +25,12 @@ options=(!strip)
 
 source=(
     "http://us.download.nvidia.com/XFree86/Linux-x86_64/$pkgver/NVIDIA-Linux-x86_64-$pkgver-no-compat32.run"
+    'linux-420-ipmi_user.patch'
+    'linux-420-vm_insert_pfn.patch'
 )
-sha512sums=('91f8639718b8511f56e8c01caafc5a061a3ae1e84202ad261fae94bf83b2c9db8eb5910a9a2b35f668bb3c82dfb3978ca037930a71e396d105c4b4b25c269ed8')
+sha512sums=('91f8639718b8511f56e8c01caafc5a061a3ae1e84202ad261fae94bf83b2c9db8eb5910a9a2b35f668bb3c82dfb3978ca037930a71e396d105c4b4b25c269ed8'
+            'cb73f75aa00b130ff3a404aeb7fa875ba664f9567a1a9cd2241a928d4238c3effce53c5db175557a4b93656d0b4909e1141966c47e5fa44e2c5b0442fdc012db'
+            'd5ccd06a7ed06d6b504cbee36d6882bb6441cce1bb73cfb08c5dceea19eabbc8e323925db67f28a617627ab5eaac54992796b238ece151f336bce750252b2f4e')
 
 [[ "$CARCH" == "x86_64" ]] && _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_folder=${_pkg//-no-compat32/}
@@ -39,6 +43,9 @@ prepare() {
     # patch if needed
     sed -i -e 's/drm_mode_connector_attach_encoder/drm_connector_attach_encoder/g' kernel/nvidia-drm/nvidia-drm-encoder.c
     sed -i -e 's/drm_mode_connector_update_edid_property/drm_connector_update_edid_property/g' kernel/nvidia-drm/nvidia-drm-connector.c
+
+    patch -p1 -i "$srcdir/linux-420-ipmi_user.patch"
+    patch -p1 -i "$srcdir/linux-420-vm_insert_pfn.patch"
 }
 
 build() {
