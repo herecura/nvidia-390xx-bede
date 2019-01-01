@@ -7,7 +7,7 @@ pkgver=390.87
 _extramodules=4.20-BEDE-external
 _current_linux_version=4.20
 _next_linux_version=4.21
-pkgrel=36
+pkgrel=37
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -70,7 +70,7 @@ package() {
 
     if [[ "$CARCH" = "x86_64" ]]; then
         install -D -m644 "${srcdir}/${_folder}/kernel/nvidia-uvm.ko" \
-            "${pkgdir}/usr/lib/modules/${_extramodules}/nvidia-uvm.ko"
+            "${pkgdir}/usr/lib/modules/${_extramodules}/$_pkgname/nvidia-uvm.ko"
     fi
 
     install -dm755 "$pkgdir/usr/lib/modprobe.d"
