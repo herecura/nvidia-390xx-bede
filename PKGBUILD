@@ -4,10 +4,10 @@
 _pkgname=nvidia
 pkgname=$_pkgname-390xx-bede
 pkgver=390.116
-_extramodules=4.20-BEDE-external
-_current_linux_version=4.20.14
-_next_linux_version=4.21
-pkgrel=3
+_extramodules=5.0-BEDE-external
+_current_linux_version=5.0
+_next_linux_version=5.1
+pkgrel=4
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
