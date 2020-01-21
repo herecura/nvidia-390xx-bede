@@ -4,10 +4,9 @@
 _pkgname=nvidia
 pkgname=$_pkgname-390xx-bede
 pkgver=390.132
-_extramodules=5.4-BEDE-external
-_current_linux_version=5.4.13
-_next_linux_version=5.5
-pkgrel=19
+_current_linux_version=5.5rc7
+_next_linux_version=5.6
+pkgrel=20
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -25,8 +24,10 @@ options=(!strip)
 
 source=(
     "http://us.download.nvidia.com/XFree86/Linux-x86_64/$pkgver/NVIDIA-Linux-x86_64-$pkgver-no-compat32.run"
+    "linux-5.5.patch"
 )
-sha512sums=('cdd9b826d3ad96f6c255296336a988eb8e67e1916859319f6e19a24c32484ec5dbb00312bc641b62068829c757e301d14d6bcfc6d833ce78db83db862df59bbe')
+sha512sums=('cdd9b826d3ad96f6c255296336a988eb8e67e1916859319f6e19a24c32484ec5dbb00312bc641b62068829c757e301d14d6bcfc6d833ce78db83db862df59bbe'
+            'db046801d628468afa2a0d98b3a848b250cbc969dcb8cbf91fe949509fe758722bb396c41b47e8774c80501dccf48f709788a87e1af2cd75e54177eeaa83478c')
 
 [[ "$CARCH" == "x86_64" ]] && _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_folder=${_pkg//-no-compat32/}
@@ -37,6 +38,7 @@ prepare() {
     sh $_pkg.run --extract-only
     cd $_folder
     # patch if needed
+    patch -p1 -i "$srcdir/linux-5.5.patch"
 }
 
 build() {
