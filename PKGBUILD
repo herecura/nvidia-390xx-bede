@@ -7,7 +7,7 @@ pkgname=$_pkgname-390xx-bede
 pkgver=390.138
 _current_linux_version=5.8
 _next_linux_version=5.9
-pkgrel=7
+pkgrel=10
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -32,6 +32,9 @@ package() {
 
     local kernver=$(</usr/src/linux-bede/version)
     local extradir="/usr/lib/modules/$kernver/extramodules"
+    # output dkms log for easier debugging
+    cat "/var/lib/dkms/nvidia/${pkgver}/build/make.log"
+
     install -dm755 "${pkgdir}${extradir}/$_pkgname"
     cp -a "/var/lib/dkms/$_pkgname/kernel-$kernver-x86_64/module"/* \
         "${pkgdir}${extradir}/$_pkgname/"
