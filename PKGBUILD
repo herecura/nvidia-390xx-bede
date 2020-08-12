@@ -5,9 +5,9 @@
 _pkgname=nvidia
 pkgname=$_pkgname-390xx-bede
 pkgver=390.138
-_current_linux_version=5.7.14
-_next_linux_version=5.8
-pkgrel=10
+_current_linux_version=5.8.1
+_next_linux_version=5.9
+pkgrel=14
 pkgdesc="NVIDIA drivers for linux-bede, 390xx legacy branch"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -32,6 +32,13 @@ package() {
 
     local kernver=$(</usr/src/linux-bede/version)
     local extradir="/usr/lib/modules/$kernver/extramodules"
+    # output dkms log for easier debugging
+    if [[ -f "/var/lib/dkms/nvidia/${pkgver}/build/make.log" ]]; then
+        cat "/var/lib/dkms/nvidia/${pkgver}/build/make.log"
+    elif [[ -f "/var/lib/dkms/nvidia/${pkgver}/${kernver}/log/make.log" ]]; then
+        cat "/var/lib/dkms/nvidia/${pkgver}/${kernver}/log/make.log"
+    fi
+
     install -dm755 "${pkgdir}${extradir}/$_pkgname"
     cp -a "/var/lib/dkms/$_pkgname/kernel-$kernver-x86_64/module"/* \
         "${pkgdir}${extradir}/$_pkgname/"
@@ -40,4 +47,14 @@ package() {
     echo "blacklist nouveau" >> "$pkgdir/usr/lib/modprobe.d/$pkgname.conf"
     echo "blacklist nvidiafb" >> "$pkgdir/usr/lib/modprobe.d/$pkgname.conf"
 }
+
+
+
+
+
+
+
+
+
+
 
